@@ -3,19 +3,10 @@
         headers: {
             cookie: `session=${process.env.SESSION_TOKEN}`
         }
-    }).then((res) => res.text()))
-        .split('\n')
-        .filter((line: string) => line.length > 0)
-        .map((line: string) => line
-            .replaceAll('one', 'one1one')
-            .replaceAll('two', 'two2two')
-            .replaceAll('three', 'three3three')
-            .replaceAll('four', 'four4four')
-            .replaceAll('five', 'five5five')
-            .replaceAll('six', 'six6six')
-            .replaceAll('seven', 'seven7seven')
-            .replaceAll('eight', 'eight8eight')
-            .replaceAll('nine', 'nine9nine'))
+    })
+        .then((res) => res.text())
+        .then((text: string) => text.match(/(\S*)\n/g) as string[]))
+        .map((line: string) => ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'].reduce((acc: string, word: string, index: number) => acc.replaceAll(word, word + (index + 1) + word), line))
         .map((line: string) => line.match(/\d/g) as string[])
         .reduce((acc: number, nums: string[]) => acc += parseInt(nums[0] + nums[nums.length - 1]), 0)
 
