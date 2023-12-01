@@ -1,10 +1,10 @@
 import { getInput } from "@lib/input";
 
 const getSumOfFirstLast = async (part: 1 | 2): Promise<number> => {
-    const addDigitToNumWords = (lines: string[]): string[] => {
-        const numWords = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-        return lines.map((line: string): string => numWords.reduce((acc: string, word: string, index: number): string => acc.replaceAll(word, word + (index + 1) + word), line))
-    }
+    const addDigitToNumWords = (lines: string[]): string[] => lines
+        .map((line: string): string => ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+            .reduce((acc: string, word: string, index: number): string => acc.replaceAll(word, word + (index + 1) + word), line))
+    
     const getSumOfLines = (lines: string[]): number => lines
         .map((line: string): string[] => line.match(/\d/g) ?? [])
         .reduce((acc: number, nums: string[]): number => acc += parseInt(nums[0] + nums[nums.length - 1]), 0)
