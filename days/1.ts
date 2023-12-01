@@ -1,7 +1,7 @@
 import { getInput } from "@lib/input";
 
 const getSumOfFirstLast = async (part: 1 | 2): Promise<number> => {
-    const addDigitalToNumWords = (lines: string[]): string[] => {
+    const addDigitToNumWords = (lines: string[]): string[] => {
         const numWords = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
         return lines.map((line: string): string => numWords.reduce((acc: string, word: string, index: number): string => acc.replaceAll(word, word + (index + 1) + word), line))
     }
