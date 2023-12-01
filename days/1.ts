@@ -1,3 +1,5 @@
+import { getInput } from "@lib/input";
+
 const getSumOfFirstLast = async (part: 1 | 2): Promise<number> => {
     const addDigitalToNumWords = (lines: string[]): string[] => {
         const numWords = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
@@ -7,12 +9,7 @@ const getSumOfFirstLast = async (part: 1 | 2): Promise<number> => {
         .map((line: string): string[] => line.match(/\d/g) ?? [])
         .reduce((acc: number, nums: string[]): number => acc += parseInt(nums[0] + nums[nums.length - 1]), 0)
 
-    return fetch(`https://adventofcode.com/2023/day/1/input`, {
-        headers: {
-            cookie: `session=${process.env.SESSION_TOKEN}`
-        }
-    })
-        .then((res: Response): Promise<string> => res.text())
+    return getInput(1)
         .then((text: string): string[] => text.split('\n').filter((line: string): boolean => line.length > 0))
         .then((lines: string[]): string[] => part === 1 ? lines : addDigitalToNumWords(lines))
         .then(getSumOfLines)
