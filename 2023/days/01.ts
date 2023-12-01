@@ -15,11 +15,10 @@ export const getSumOfFirstLast = async (input: Promise<string>, part: 1 | 2): Pr
         .then(getSumOfLines)
 }
 
-const input = getInput(1)
-const start = performance.now()
-getSumOfFirstLast(input, 1).then(((result: number): void => {
-    console.log(`Part 1: ${result} (${(performance.now() - start).toFixed(2)}ms)`)
-}))
-getSumOfFirstLast(input, 2).then(((result: number): void => {
-    console.log(`Part 2: ${result} (${(performance.now() - start).toFixed(2)}ms)`)
-}))
+
+export const solution = async (): Promise<void> => {
+    const input = getInput(1)
+    const start = performance.now()
+    getSumOfFirstLast(input, 1).then(((result: number): void => console.log(`Part 1: ${result} (${(performance.now() - start).toFixed(2)}ms)`)))
+    getSumOfFirstLast(input, 2).then(((result: number): void => console.log(`Part 2: ${result} (${(performance.now() - start).toFixed(2)}ms)`)))
+}
