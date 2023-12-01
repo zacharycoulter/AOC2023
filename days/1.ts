@@ -12,9 +12,11 @@
             .replaceAll('six', 'six6six')
             .replaceAll('seven', 'seven7seven')
             .replaceAll('eight', 'eight8eight')
-            .replaceAll('nine', 'nine9nine')
-        )
-        .map((line: string) => line.split('').filter((char: string) => !isNaN(parseInt(char))).join(''))
+            .replaceAll('nine', 'nine9nine'))
+        .map((line: string) => line
+            .split('')
+            .filter((char: string) => !isNaN(parseInt(char)))
+            .join(''))
         .reduce((acc: number, nums: string) => acc += parseInt(nums[0] + nums[nums.length - 1]), 0);
     console.log(total);
 })()
