@@ -1,10 +1,9 @@
 (async () => {
-    const input = await fetch(`https://adventofcode.com/2023/day/1/input`, {
+    const result = (await fetch(`https://adventofcode.com/2023/day/1/input`, {
         headers: {
             cookie: `session=${process.env.SESSION_TOKEN}`
         }
-    }).then((res) => res.text());
-    const total = input
+    }).then((res) => res.text()))
         .split('\n')
         .filter((line: string) => line.length > 0)
         .map((line: string) => line
@@ -20,6 +19,7 @@
         .map((line: string) => line
             .split('')
             .filter((char: string) => !isNaN(parseInt(char))))
-        .reduce((acc: number, nums: string[]) => acc += parseInt(nums[0] + nums[nums.length - 1]), 0);
-    console.log(total);
+        .reduce((acc: number, nums: string[]) => acc += parseInt(nums[0] + nums[nums.length - 1]), 0)
+
+    console.log(result)
 })()
