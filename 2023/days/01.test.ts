@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { getSumOfFirstLast } from '@days/1'
+import { getSumOfFirstLast } from '@days/01'
 
 test('day 1, part 1', async () => {
     const input = Promise.resolve(`1abc2

@@ -1,5 +1,6 @@
 export const getInput = async (day: number): Promise<string> => {
-    const file = Bun.file(`./inputs/${day}.txt`);
+    const inputFilePath = `./inputs/${day.toString().padStart(2, '0')}.txt`;
+    const file = Bun.file(inputFilePath);
     if (await file.exists()) {
         return file.text();
     }
@@ -8,6 +9,6 @@ export const getInput = async (day: number): Promise<string> => {
             cookie: `session=${process.env.SESSION_TOKEN}`
         }
     }).then((res: Response): Promise<string> => res.text());
-    await Bun.write(`./inputs/${day}.txt`, text);
+    await Bun.write(inputFilePath, text);
     return text
 }
