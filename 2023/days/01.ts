@@ -16,6 +16,10 @@ export const getSumOfFirstLast = async (input: Promise<string>, part: 1 | 2): Pr
 }
 
 const input = getInput(1)
-Promise
-    .all([getSumOfFirstLast(input, 1), getSumOfFirstLast(input, 2)])
-    .then(console.log)
+const start = performance.now()
+getSumOfFirstLast(input, 1).then(((result: number): void => {
+    console.log(`Part 1: ${result} (${(performance.now() - start).toFixed(2)}ms)`)
+}))
+getSumOfFirstLast(input, 2).then(((result: number): void => {
+    console.log(`Part 2: ${result} (${(performance.now() - start).toFixed(2)}ms)`)
+}))
