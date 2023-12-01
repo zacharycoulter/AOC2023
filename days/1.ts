@@ -11,7 +11,7 @@ const getSumOfFirstLast = async (part: 1 | 2): Promise<number> => {
 
     return getInput(1)
         .then((text: string): string[] => text.split('\n').filter((line: string): boolean => line.length > 0))
-        .then((lines: string[]): string[] => part === 1 ? lines : addDigitalToNumWords(lines))
+        .then((lines: string[]): string[] => part === 1 ? lines : addDigitToNumWords(lines))
         .then(getSumOfLines)
 }
 
