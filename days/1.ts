@@ -16,9 +16,7 @@
             .replaceAll('seven', 'seven7seven')
             .replaceAll('eight', 'eight8eight')
             .replaceAll('nine', 'nine9nine'))
-        .map((line: string) => line
-            .split('')
-            .filter((char: string) => !isNaN(parseInt(char))))
+        .map((line: string) => line.match(/\d/g) as string[])
         .reduce((acc: number, nums: string[]) => acc += parseInt(nums[0] + nums[nums.length - 1]), 0)
 
     console.log(result)
