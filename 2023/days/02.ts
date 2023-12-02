@@ -1,14 +1,18 @@
+const parseGameResults = (input: string): { id: number; results: { color: string; value: number; }[] }[] =>
+    [...input.matchAll(/Game\s(\d+):(.*)\n/g)]
+        .map(([, id, results]: string[]): { id: number; results: { color: string; value: number; }[] } => ({
+            id: parseInt(id),
+            results: [...results.matchAll(/(?:(\d+)\s(\S+))(?:$|,|;)+/g)]
+                .map(([, value, color]: string[]) => ({ color, value: parseInt(value) }))
+        }))
+
+
 export const part1 = (input: string): number => {
-    const games = [...input.matchAll(/Game\s*?(\d*)\:\s(.*)\n/g)]
-
     let sum = 0;
-    for (const [, id, result] of games) {
-        const results = [...`${result};`.matchAll(/(\d+\s+\S+)[,;]/g)]
 
+    for (const { id, results } of parseGameResults(input)) {
         let topResults: { [key: string]: number } = { blue: 0, red: 0, green: 0 };
-        for (const [, result] of results) {
-            const color = result.split(' ')[1]
-            const value = parseInt(result.split(' ')[0])
+        for (const { color, value } of results) {
             if (topResults[color] < value) topResults[color] = value
         }
         if (!(
@@ -16,7 +20,7 @@ export const part1 = (input: string): number => {
             (topResults.green > 13) ||
             (topResults.blue > 14)
         )) {
-            sum += parseInt(id)
+            sum += id
             continue;
         }
     }
@@ -25,16 +29,10 @@ export const part1 = (input: string): number => {
 }
 
 export const part2 = (input: string): number => {
-    const games = [...input.matchAll(/Game\s*?(\d*)\:\s(.*)\n/g)]
-
     let sum = 0;
-    for (const [,, result] of games) {
-        const results = [...`${result};`.matchAll(/(\d+\s+\S+)[,;]/g)]
-
+    for (const { results } of parseGameResults(input)) {
         let topResults: { [key: string]: number } = { blue: 0, red: 0, green: 0 };
-        for (const [, result] of results) {
-            const color = result.split(' ')[1]
-            const value = parseInt(result.split(' ')[0])
+        for (const { color, value } of results) {
             if (topResults[color] < value) topResults[color] = value
         }
         sum += topResults.red * topResults.green * topResults.blue
