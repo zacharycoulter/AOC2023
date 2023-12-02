@@ -1,6 +1,11 @@
-const parseGameResults = (input: string): { id: number; results: { color: string; value: number; }[] }[] =>
+type Game = {
+    id: number;
+    results: { color: string; value: number; }[]
+}
+
+const parseGameResults = (input: string): Game[] =>
     [...input.matchAll(/Game\s(\d+):(.*)\n/g)]
-        .map(([, id, results]: string[]): { id: number; results: { color: string; value: number; }[] } => ({
+        .map(([, id, results]: string[]): Game => ({
             id: parseInt(id),
             results: [...results.matchAll(/(?:(\d+)\s(\S+))(?:$|,|;)+/g)]
                 .map(([, value, color]: string[]) => ({ color, value: parseInt(value) }))
