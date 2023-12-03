@@ -12,22 +12,6 @@ const findNumbers = (line: string): { number: number; start: number; end: number
     }
     return numbers
 }
-const findWholeNumber = (snippet: string, line: string) => {
-    snippet = snippet.replace(/(\D)/g, '\\$1')
-    if (/\d\D\d/.test(snippet)) return 1
-
-    let expression = '';
-    if (isNumber(snippet[0]) && isNumber(snippet[snippet.length - 1]) && snippet.includes('*')) expression = `([0-9]+)?${snippet}`
-    else if (isNumber(snippet[0]) && isNumber(snippet[snippet.length - 1])) expression = `([0-9]+)?${snippet}([0-9]+)?`
-    else if (isNumber(snippet[0])) expression = `([0-9]+)?${snippet}`
-    else expression = `${snippet}([0-9]+)?`
-    const [, found] = new RegExp(expression).exec(line) as string[]
-
-    let number = /([0-9]+)/.exec(snippet)?.[0]
-    if (!number) return 1
-    if (!found) return parseInt(number)
-    return parseInt(isNumber(snippet[0]) ? number = `${found}${number}` : `${number}${found}`)
-}
 
 export const part1 = (input: string): number => {
     let sum = 0;
@@ -49,45 +33,42 @@ export const part1 = (input: string): number => {
 }
 
 export const part2 = (input: string): number => {
+    const lineLength = input.indexOf('\n')
     let sum = 0;
 
-    const lines = input
-        .split('\n')
-        .filter((line: string) => !!line)
+    let index = 0;
+    while ((index = input.indexOf('*', index + 1)) > 0) {
+        const surrounding = [
+            [
+                index - (lineLength + 2),
+                index - (lineLength + 1),
+                index - lineLength
+            ],
+            [
+                index - 1,
+                index,
+                index + 1
+            ],
+            [
+                index + lineLength,
+                index + (lineLength + 1),
+                index + (lineLength + 2)
+            ]
+        ].map(row => row
+            .map((index) => {
+                let backwardsIndex = index, forwardIndex = index;
+                while (isNumber(input[backwardsIndex])) backwardsIndex--
+                while (isNumber(input[forwardIndex])) forwardIndex++
+                const number = parseInt(input.slice(backwardsIndex + 1, forwardIndex))
+                return number
+            })
+            .filter((value, index, array) => array[index - 1] !== value)
+            .filter((value) => !isNaN(value))
+        ).flat()
 
-    for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
-        const line = lines[lineIndex]
-        const prevLine = lines[lineIndex - 1]
-        const nextLine = lines[lineIndex + 1]
+        if (surrounding.length === 2)
+            sum += surrounding[0] * surrounding[1]
 
-        console.log([prevLine, line, nextLine])
-
-        for (let charIndex = 0; charIndex < line.length; charIndex++) {
-            const char = lines[lineIndex][charIndex];
-
-            if (char === '*') {
-                const start = Math.max(0, charIndex - 3)
-                const end = Math.min(line.length, charIndex + 4)
-                const upperText = prevLine?.slice(start, end)
-                const middleText = line.slice(start, end)
-                const lowerText = nextLine?.slice(start, end)
-
-                const countOfNumbers = `${upperText}.${middleText}.${lowerText}`.match(/(\d+)/g)?.length ?? 0
-                if (countOfNumbers === 2) {
-                    console.log(upperText, middleText, lowerText)
-                    console.log([
-                        findWholeNumber(upperText, prevLine),
-                        findWholeNumber(middleText, line),
-                        findWholeNumber(lowerText, nextLine)
-                    ])
-                    sum +=
-                        findWholeNumber(upperText, prevLine) *
-                        findWholeNumber(middleText, line) *
-                        findWholeNumber(lowerText, nextLine)
-                }
-            }
-        }
-        console.log('\n\n')
     }
     return sum
 }
